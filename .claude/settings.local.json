@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /S \"C:\\\\Cirreum\\\\Runtime Extensions\\\\Cirreum.Runtime.Wasm.Oidc\\\\src\\\\Cirreum.Runtime.Wasm.Oidc\")",
+      "Bash(powershell -Command:*)"
+    ]
+  }
+}
