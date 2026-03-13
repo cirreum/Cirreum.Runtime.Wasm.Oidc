@@ -57,7 +57,7 @@ The library extends Microsoft’s WASM authentication stack with enhanced claims
 
 * **Application User Integration**
 
-  * Fluent registration of application user loaders
+  * Fluent registration of application user factories
 
 * **Fluent Configuration API**
 
@@ -207,14 +207,14 @@ Works identically for **static** and **dynamic** authentication.
 
 ```csharp
 builder.AddOidcAuth(options => { /* ... */ })
-    .AddApplicationUser<MyUser, MyUserLoader>();
+    .AddApplicationUserFactory<MyUserFactory>();
 ```
 
 Or with dynamic auth:
 
 ```csharp
 builder.AddDynamicAuth()
-    .AddApplicationUser<MyUser, MyUserLoader>();
+    .AddApplicationUserFactory<MyUserFactory>();
 ```
 
 ---

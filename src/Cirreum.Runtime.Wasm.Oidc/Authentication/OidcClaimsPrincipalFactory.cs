@@ -3,7 +3,6 @@ namespace Cirreum.Runtime.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 /// <summary>
 /// OIDC-specific <see cref="CommonClaimsPrincipalFactory{TAccount}"/> implementation
@@ -33,25 +32,9 @@ internal sealed class OidcClaimsPrincipalFactory(
 	IAccessTokenProviderAccessor accessor,
 	IServiceProvider serviceProvider,
 	ILogger<OidcClaimsPrincipalFactory> logger,
-	IEnumerable<IClaimsExtender>? claimsExtenders = null,
-	IEnumerable<IAuthenticationPostProcessor>? postProcessors = null
+	IEnumerable<IClaimsExtender>? claimsExtenders = null
 ) : CommonClaimsPrincipalFactory<RemoteUserAccount>(
 		logger,
 		serviceProvider,
 		accessor ?? throw new ArgumentNullException(nameof(accessor)),
-		claimsExtenders,
-		postProcessors) {
-
-	/// <summary>
-	/// Maps identity claims from the OIDC provider.
-	/// </summary>
-	/// <remarks>
-	/// The <see cref="RemoteUserAccount"/> already contains claims from the ID token,
-	/// including roles when the provider is configured to emit them. Custom claim
-	/// remapping (e.g. <c>customRoles</c> → <c>roles</c>) is handled by registered
-	/// <see cref="IClaimsExtender"/> instances in the base class pipeline.
-	/// </remarks>
-	protected override ValueTask MapIdentityAsync(ClaimsIdentity identity, RemoteUserAccount account) =>
-		ValueTask.CompletedTask;
-
-}
+		claimsExtenders);

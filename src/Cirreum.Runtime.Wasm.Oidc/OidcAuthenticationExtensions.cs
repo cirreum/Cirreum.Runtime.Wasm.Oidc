@@ -2,6 +2,7 @@
 
 using Cirreum.Authorization;
 using Cirreum.Runtime.Authentication.Builders;
+using Cirreum.Security;
 
 public static class OidcAuthenticationExtensions {
 
@@ -37,41 +38,32 @@ public static class OidcAuthenticationExtensions {
 	//
 
 	/// <summary>
-	/// Registers application user services with the specified user type and loader implementation.
+	/// Registers an <see cref="IApplicationUserFactory"/> implementation used to create
+	/// <see cref="IApplicationUser"/> instances during initialization.
 	/// </summary>
-	/// <typeparam name="TApplicationUser">The type of the application user that implements <see cref="IApplicationUser"/>.</typeparam>
-	/// <typeparam name="TApplicationUserLoader">The type of the application user loader that implements <see cref="IApplicationUserLoader{TApplicationUser}"/>.</typeparam>
+	/// <typeparam name="TApplicationUserFactory">
+	/// The factory implementation. Must implement <see cref="IApplicationUserFactory"/>.
+	/// </typeparam>
 	/// <param name="builder">The <see cref="IOidcAuthenticationBuilder"/> to add services to.</param>
 	/// <returns>The <see cref="IOidcAuthenticationBuilder"/> so that additional calls can be chained.</returns>
-	public static IOidcAuthenticationBuilder AddApplicationUser<TApplicationUser, TApplicationUserLoader>(
+	public static IOidcAuthenticationBuilder AddApplicationUserFactory<TApplicationUserFactory>(
 		this IOidcAuthenticationBuilder builder)
-		where TApplicationUser : class, IApplicationUser
-		where TApplicationUserLoader : class, IApplicationUserLoader<TApplicationUser> {
-
-		// Forward to real method
-		builder.Services.AddApplicationUser<TApplicationUser, TApplicationUserLoader>();
-
+		where TApplicationUserFactory : class, IApplicationUserFactory {
+		builder.Services.AddApplicationUser<TApplicationUserFactory>();
 		return builder;
-
 	}
 
 	/// <summary>
-	/// Registers application user services with a custom loader factory function.
+	/// Registers an <see cref="IApplicationUserFactory"/> using a custom factory function.
 	/// </summary>
-	/// <typeparam name="TApplicationUser">The type of the application user that implements <see cref="IApplicationUser"/>.</typeparam>
 	/// <param name="builder">The <see cref="IOidcAuthenticationBuilder"/> to add services to.</param>
-	/// <param name="loaderFactory">A factory function that creates an instance of <see cref="IApplicationUserLoader{TApplicationUser}"/> using the service provider.</param>
+	/// <param name="factory">A factory function that creates an <see cref="IApplicationUserFactory"/> instance.</param>
 	/// <returns>The <see cref="IOidcAuthenticationBuilder"/> so that additional calls can be chained.</returns>
-	public static IOidcAuthenticationBuilder AddApplicationUser<TApplicationUser>(
+	public static IOidcAuthenticationBuilder AddApplicationUserFactory(
 		this IOidcAuthenticationBuilder builder,
-		Func<IServiceProvider, IApplicationUserLoader<TApplicationUser>> loaderFactory)
-		where TApplicationUser : class, IApplicationUser {
-
-		// Forward to real method
-		builder.Services.AddApplicationUser(loaderFactory);
-
+		Func<IServiceProvider, IApplicationUserFactory> factory) {
+		builder.Services.AddApplicationUser(factory);
 		return builder;
-
 	}
 
 }
