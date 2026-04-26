@@ -1,9 +1,33 @@
 ﻿namespace Cirreum.Runtime;
 
 using Cirreum.Authorization;
+using Cirreum.Runtime.Authentication;
 using Cirreum.Runtime.Authentication.Builders;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class OidcAuthenticationExtensions {
+
+	//
+	// Claims Extender
+	//
+
+	/// <summary>
+	/// Adds a claims extender to the authentication services.
+	/// </summary>
+	/// <typeparam name="TClaimsExtender">The type of the claims extender to add. Must implement
+	/// <see cref="IClaimsExtender"/>.</typeparam>
+	/// <param name="builder">The authentication services builder.</param>
+	/// <returns>The same <see cref="IOidcAuthenticationBuilder"/> instance for method chaining.</returns>
+	/// <remarks>
+	/// Claims extenders allow for customization of user claims after authentication, enabling additional
+	/// claim transformations before user profile enrichment occurs.
+	/// </remarks>
+	public static IOidcAuthenticationBuilder AddClaimsExtender<TClaimsExtender>(
+		this IOidcAuthenticationBuilder builder)
+		where TClaimsExtender : class, IClaimsExtender {
+		builder.Services.AddScoped<IClaimsExtender, TClaimsExtender>();
+		return builder;
+	}
 
 	//
 	// Session Monitoring
