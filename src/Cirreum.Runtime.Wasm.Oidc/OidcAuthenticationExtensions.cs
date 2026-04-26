@@ -2,7 +2,6 @@
 
 using Cirreum.Authorization;
 using Cirreum.Runtime.Authentication.Builders;
-using Cirreum.Security;
 
 public static class OidcAuthenticationExtensions {
 
@@ -27,7 +26,7 @@ public static class OidcAuthenticationExtensions {
 	/// </remarks>
 	public static IOidcAuthenticationBuilder AddSessionMonitoring(
 		this IOidcAuthenticationBuilder builder,
-		Action<SessionOptions>? configure) {
+		Action<SessionOptions>? configure = null) {
 		builder.Services.AddSessionMonitoring(configure);
 		return builder;
 	}
