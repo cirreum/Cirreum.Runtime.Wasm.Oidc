@@ -56,37 +56,6 @@ public static class HostingExtensions {
 	}
 
 	/// <summary>
-	/// Adds standard Oidc Authentication and registers the defined <typeparamref name="TClaimsExtender"/>
-	/// as a scoped service.
-	/// </summary>
-	/// <typeparam name="TClaimsExtender">The claims extender to register</typeparam>
-	/// <param name="builder">The <see cref="IClientDomainApplicationBuilder"/>.</param>
-	/// <param name="configure">Configure the <see cref="OidcProviderOptions"/>.</param>
-	/// <param name="authorization">
-	/// Optional callback to add additional policies. 
-	/// Default policies already included are: 
-	/// <see cref="AuthorizationPolicies.Standard"/>, 
-	/// <see cref="AuthorizationPolicies.StandardInternal"/>,
-	/// <see cref="AuthorizationPolicies.StandardAgent"/>, 
-	/// <see cref="AuthorizationPolicies.StandardManager"/> and 
-	/// <see cref="AuthorizationPolicies.StandardAdmin"/></param>
-	/// <param name="roleClaimType">The custom role claim type. Default: roles</param>
-	/// <param name="nameClaimType">The custom name claim type. Default: name</param>
-	/// <returns>The <see cref="IUserProfileEnrichmentBuilder"/> to support optional profile enrichment.</returns>
-	public static IOidcAuthenticationBuilder AddOidcAuth<TClaimsExtender>(this IClientDomainApplicationBuilder builder,
-		Action<OidcProviderOptions> configure,
-		Action<AuthorizationOptions>? authorization = null,
-		string roleClaimType = "roles",
-		string nameClaimType = "name")
-		where TClaimsExtender : class, IClaimsExtender {
-
-		builder.Services.AddScoped<IClaimsExtender, TClaimsExtender>();
-
-		return builder.AddOidcAuth(configure, authorization, roleClaimType, nameClaimType);
-
-	}
-
-	/// <summary>
 	/// Adds dynamic OIDC authentication resolved at runtime from tenant configuration.
 	/// </summary>
 	/// <param name="builder">The <see cref="IClientDomainApplicationBuilder"/>.</param>
@@ -174,47 +143,6 @@ public static class HostingExtensions {
 			authorization: authorization,
 			roleClaimType: roleClaimType,
 			nameClaimType: nameClaimType);
-	}
-
-	/// <summary>
-	/// Adds dynamic OIDC authentication with a custom claims extender.
-	/// </summary>
-	/// <typeparam name="TClaimsExtender">
-	/// The claims extender type to register for custom claims processing.
-	/// </typeparam>
-	/// <param name="builder">The <see cref="IClientDomainApplicationBuilder"/>.</param>
-	/// <param name="authorization">
-	/// Optional callback to add additional authorization policies.
-	/// </param>
-	/// <param name="roleClaimType">The claim type for roles. Default: "roles"</param>
-	/// <param name="nameClaimType">The claim type for name. Default: "name"</param>
-	/// <returns>
-	/// An <see cref="IOidcAuthenticationBuilder"/> for optionally adding profile enrichment.
-	/// </returns>
-	/// <remarks>
-	/// Use this overload when you need to transform or extend claims from the IdP,
-	/// for example to map provider-specific role claims to your application's role format.
-	/// </remarks>
-	/// <example>
-	/// <code>
-	/// // Program.cs
-	/// var builder = DomainApplication.CreateBuilder(args);
-	/// 
-	/// builder.AddDynamicAuth&lt;OktaClaimsExtender&gt;();
-	/// 
-	/// await builder.BuildAndRunAsync&lt;MyDomain&gt;();
-	/// </code>
-	/// </example>
-	public static IOidcAuthenticationBuilder AddDynamicAuth<TClaimsExtender>(
-		this IClientDomainApplicationBuilder builder,
-		Action<AuthorizationOptions>? authorization = null,
-		string roleClaimType = "roles",
-		string nameClaimType = "name")
-		where TClaimsExtender : class, IClaimsExtender {
-
-		builder.Services.AddScoped<IClaimsExtender, TClaimsExtender>();
-
-		return builder.AddDynamicAuth(authorization, roleClaimType, nameClaimType);
 	}
 
 }

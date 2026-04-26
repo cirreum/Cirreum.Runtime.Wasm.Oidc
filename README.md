@@ -93,11 +93,12 @@ builder.AddOidcAuth(options =>
 ### Static OIDC with Custom Claims Extender
 
 ```csharp
-builder.AddOidcAuth<MyClaimsExtender>(options =>
+builder.AddOidcAuth(options =>
 {
     options.Authority = "https://your-identity-provider.com";
     options.ClientId = "your-client-id";
-});
+})
+.AddClaimsExtender<MyClaimsExtender>();
 ```
 
 ---
@@ -128,7 +129,8 @@ await builder.BuildAndRunAsync<MyDomain>();
 ### Dynamic Auth with Claims Extender
 
 ```csharp
-builder.AddDynamicAuth<OktaClaimsExtender>();
+builder.AddDynamicAuth()
+    .AddClaimsExtender<OktaClaimsExtender>();
 ```
 
 ---
@@ -140,7 +142,7 @@ builder.AddDynamicAuth<OktaClaimsExtender>();
 3. Configuration is written to:
 
 ```js
-cirreum.tenant
+window.tenantAuthConfig
 ```
 
 4. `AddDynamicAuth()` reads this configuration during startup
@@ -207,14 +209,14 @@ Works identically for **static** and **dynamic** authentication.
 
 ```csharp
 builder.AddOidcAuth(options => { /* ... */ })
-    .AddApplicationUserFactory<MyUserFactory>();
+    .AddApplicationUserResolver<MyUserResolver>();
 ```
 
 Or with dynamic auth:
 
 ```csharp
 builder.AddDynamicAuth()
-    .AddApplicationUserFactory<MyUserFactory>();
+    .AddApplicationUserResolver<MyUserResolver>();
 ```
 
 ---
