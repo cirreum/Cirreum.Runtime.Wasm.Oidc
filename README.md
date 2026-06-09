@@ -3,7 +3,7 @@
 [![NuGet Version](https://img.shields.io/nuget/v/Cirreum.Runtime.Wasm.Oidc.svg?style=flat-square\&labelColor=1F1F1F\&color=003D8F)](https://www.nuget.org/packages/Cirreum.Runtime.Wasm.Oidc/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Cirreum.Runtime.Wasm.Oidc.svg?style=flat-square\&labelColor=1F1F1F\&color=003D8F)](https://www.nuget.org/packages/Cirreum.Runtime.Wasm.Oidc/)
 [![GitHub Release](https://img.shields.io/github/v/release/cirreum/Cirreum.Runtime.Wasm.Oidc?style=flat-square\&labelColor=1F1F1F\&color=FF3B2E)](https://github.com/cirreum/Cirreum.Runtime.Wasm.Oidc/releases)
-[![License](https://img.shields.io/github/license/cirreum/Cirreum.Runtime.Wasm.Oidc?style=flat-square\&labelColor=1F1F1F\&color=F2F2F2)](https://github.com/cirreum/Cirreum.Runtime.Wasm.Oidc/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-F2F2F2?style=flat-square&labelColor=1F1F1F)](https://github.com/cirreum/Cirreum.Runtime.Wasm.Oidc/blob/main/LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-003D8F?style=flat-square\&labelColor=1F1F1F)](https://dotnet.microsoft.com/)
 
 **Seamless OIDC authentication for Blazor WebAssembly applications in the Cirreum ecosystem**
