@@ -21,10 +21,14 @@ using Microsoft.Extensions.Logging;
 ///     mapped automatically by the base class.
 ///   </item>
 ///   <item>
-///     <b>Custom claim remapping</b> — For providers that use non-standard claim types
-///     (e.g. <c>customRoles</c> from Entra External ID), register an
-///     <see cref="IClaimsExtender"/> via <c>AddOidcAuth&lt;TClaimsExtender&gt;()</c>
-///     to remap them during Phase 1.
+///     <b>Provisioned <c>custom*</c> claims</b> — Claims minted by a Cirreum Identity
+///     provisioner (<c>customRoles</c>, <c>customName</c>, …) are canonicalized to their
+///     native names by the base factory automatically: <c>customRoles</c> aliases to the
+///     configured role claim type and JSON-array values split into individual claims, so
+///     no extender is required. Register an <see cref="IClaimsExtender"/> via
+///     <c>AddClaimsExtender&lt;TClaimsExtender&gt;()</c> only for app-specific
+///     transformations — e.g. precedence between a native claim and its minted
+///     <c>custom*</c> counterpart, or parsing a bespoke claim shape.
 ///   </item>
 /// </list>
 /// </remarks>

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Updated
+
+- `Cirreum.Runtime.Wasm` 1.0.52 → 1.1.0. `OidcClaimsPrincipalFactory` inherits the new built-in
+  claim processing: provisioned `custom*` claims (`customRoles`, `customName`, …) are
+  canonicalized to their native names automatically — `customRoles` aliases to the configured
+  `roleClaimType` and JSON-array values split into individual claims for `IsInRole` — and the
+  authentication-state publication fixes ship transitively (claim transforms always run,
+  publication dedupes on user id + claims-content fingerprint). No API change in this package; an
+  `IClaimsExtender` is now needed only for app-specific transformations (e.g. native-vs-minted
+  precedence), not for `custom*` remapping.
+
+### Fixed
+
+- `OidcClaimsPrincipalFactory` doc remarks and the README no longer instruct apps to register an
+  `IClaimsExtender` to remap `customRoles` — that canonicalization is built into the
+  authentication pipeline; extender guidance now covers only the advanced cases.
+
 ## [1.0.45] - 2026-07-20
 
 ### Updated

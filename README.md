@@ -39,7 +39,8 @@ The library extends Microsoft’s WASM authentication stack with enhanced claims
 * **Enhanced Claims Processing**
 
   * Custom claims principal factory
-  * Optional claims extenders for provider-specific mapping
+  * Built-in canonicalization of provisioned `custom*` claims (`customRoles` → roles, `customName` → name, ...) — no extender required for the common case
+  * Optional claims extenders for advanced provider-specific mapping
 
 * **Authorization Policies**
 
@@ -90,7 +91,32 @@ builder.AddOidcAuth(options =>
 
 ---
 
+### Provisioned `custom*` Claims (Built-in)
+
+Claims minted by a Cirreum Identity provisioner (for example through a Descope flow calling a
+`Cirreum.Identity.Oidc` provisioning endpoint) arrive in the token under a `custom*` namespace —
+`customRoles`, `customName`, `customTenant`, and so on. The authentication pipeline canonicalizes
+them automatically, before the `ClaimsPrincipal` is built:
+
+* Each `custom*` claim gains a native-named alias — `customRoles` maps to the configured role
+  claim type (the `roleClaimType` passed to `AddOidcAuth`), `customName` to the configured name
+  claim type, `customTenant` to `tenant` — so `IsInRole`, `AuthorizeView`, and `UserProfile`
+  just work.
+* A JSON-array value (`["admin","user"]`) is split into individual claims — the normalization
+  apps previously had to hand-write in an extender.
+* The step is additive and idempotent: nothing is removed, and the original `custom*` claims
+  remain visible.
+
+**No `IClaimsExtender` is needed for this.** Write one only for judgment calls the framework
+deliberately leaves to the application — resolving precedence when a token carries both a native
+claim and its minted `custom*` counterpart, or parsing an app-specific claim shape.
+
+---
+
 ### Static OIDC with Custom Claims Extender
+
+For those advanced transformations, extenders run after the built-in canonicalization with full
+visibility of every claim:
 
 ```csharp
 builder.AddOidcAuth(options =>
