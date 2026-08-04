@@ -233,16 +233,20 @@ Works identically for **static** and **dynamic** authentication.
 
 ## Adding Application User Support
 
+Register your application-user type and the base URI of your Cirreum server; the framework
+fetches the caller's own record from the server's bootstrap endpoint during initialization —
+no client-side resolver to write:
+
 ```csharp
 builder.AddOidcAuth(options => { /* ... */ })
-    .AddApplicationUserResolver<MyUserResolver>();
+    .AddApplicationUser<MyUser>(new Uri("https://api.example.com/"));
 ```
 
 Or with dynamic auth:
 
 ```csharp
 builder.AddDynamicAuth()
-    .AddApplicationUserResolver<MyUserResolver>();
+    .AddApplicationUser<MyUser>(new Uri("https://api.example.com/"));
 ```
 
 ---

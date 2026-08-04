@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+- **The two `AddApplicationUserResolver` wrapper verbs removed** (type + factory overloads on
+  `IOidcAuthenticationBuilder`), following `Cirreum.Runtime.Wasm` 2.0.0's removal of the
+  client-side resolver. Replaced by **`AddApplicationUser<TUser>(Uri)`**: the app supplies its
+  user type and its server's base URI, and the framework fetches the caller's own record from
+  the server's bootstrap endpoint during initialization — reaching disabled callers, whom the
+  old resolver-through-operations path could never serve. See `MIGRATION-v2.md` and the
+  `Cirreum.Runtime.Wasm` 2.0.0 migration guide.
+
+### Updated
+
+- Re-pinned `Cirreum.Runtime.Wasm` `1.2.4` → `2.0.0` (Cirreum spine 4.2.0 wave).
+
 ## [1.0.52] - 2026-07-31
 
 ### Updated
